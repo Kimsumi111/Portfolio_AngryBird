@@ -1,0 +1,11 @@
+Model Information:
+* title:	Free Stylized Slingshot
+* source:	https://sketchfab.com/3d-models/free-stylized-slingshot-cf764ebd85964324a43f3558636bd059
+* author:	L4L (https://sketchfab.com/Land4land)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Free Stylized Slingshot" (https://sketchfab.com/3d-models/free-stylized-slingshot-cf764ebd85964324a43f3558636bd059) by L4L (https://sketchfab.com/Land4land) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
