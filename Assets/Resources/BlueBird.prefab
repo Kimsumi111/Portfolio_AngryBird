@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7888272272091148758}
   - component: {fileID: 808033313750474536}
+  - component: {fileID: 1884800600659416461}
   m_Layer: 0
   m_Name: root
   m_TagString: Untagged
@@ -87,6 +88,27 @@ CapsuleCollider:
   m_Height: 1.46
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.28}
+--- !u!135 &1884800600659416461
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231545356142357932}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.34
+  m_Center: {x: 0, y: 0, z: 0.55}
 --- !u!1 &294603527370999296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1636,13 +1658,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2465a6b5e9546d34c92c48f4c5808048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigid: {fileID: 0}
+  rigid: {fileID: 4287191810483490263}
   MaxPower: 10
   bSnapped: 0
   MaxGapSize: 30
   initPosition: {x: 0, y: 0, z: 0}
   isThrown: 0
-  _stateCheckCamera: {fileID: 288553745198099310, guid: 1261633a41a58ee4fa73275d9aa56d43, type: 3}
 --- !u!54 &4287191810483490263
 Rigidbody:
   m_ObjectHideFlags: 0

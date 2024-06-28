@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private GameObject selectedPrefab;
     private PlayerController playerController;
     public Trajectory trajectory;
-    private StateCheckCamera _stateCheckCamera;
+    private CameraManager cameraManager;
 
     
     private void Awake()
@@ -89,8 +89,11 @@ public class GameManager : MonoBehaviour
         {
             selectedPrefab = bluePrefab;
         }
-        else
-            Debug.LogError("Not Found selectedPrefab");
+
+        if (playerInstance != null)
+        {
+            Destroy(playerInstance);
+        }
             
         Debug.Log("GameManager에서 player 인스턴스 생성함.");
         playerInstance = Instantiate(selectedPrefab, initPosition, initRotation);
@@ -101,7 +104,11 @@ public class GameManager : MonoBehaviour
     
     public GameObject ReturnNewPlayer()
     {
-        CreateNewPlayer();
+        if (playerInstance == null)
+        {
+            CreateNewPlayer();
+        }
+        
         return playerInstance;
     }
     
@@ -123,10 +130,6 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                if (playerController.gameObject != null)
-                {
-                    Destroy(playerController.gameObject);
-                }
                 currentchar = Character.Yellow;
                 SetCurrentPrefab();
                 CreateNewPlayer();
@@ -134,10 +137,6 @@ public class GameManager : MonoBehaviour
         
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                if (playerController.gameObject != null)
-                {
-                    Destroy(playerController.gameObject);
-                }
                 currentchar = Character.Blue;
                 SetCurrentPrefab();
                 CreateNewPlayer();

@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     public bool isThrown = false;
 
     private GameManager gameManager;
-    public StateCheckCamera _stateCheckCamera;
+    private CameraManager _cameraManager;
     
     private static readonly int IsFlying = Animator.StringToHash("isFlying");
 
@@ -47,6 +47,20 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("GameManager 인스턴스를 찾을 수 없음");
             return;
         }
+
+        GameObject cameraManagerObject = GameObject.FindWithTag("CameraManager");
+        if (cameraManagerObject != null)
+        {
+            _cameraManager = cameraManagerObject.GetComponent<CameraManager>();
+        }
+        
+        Animator newAnimator = GetComponent<Animator>();
+        if (newAnimator == null)
+        {
+            Debug.LogError("Animator 컴포넌트가 없음.");
+            return;
+        }
+        _cameraManager.SetNewPlayeranim(newAnimator);
         
         rigid.useGravity = false;
         isThrown = false;
@@ -57,10 +71,6 @@ public class PlayerController : MonoBehaviour
         rigid.constraints = RigidbodyConstraints.FreezeAll;
         
         playerMass = rigid.mass;
-
-        playerPrefab = gameManager.ReturnNewPlayer();
-        Animator newAnimator = playerPrefab.GetComponent<Animator>();
-        _stateCheckCamera.SetNewPlayerAnim(newAnimator);
     }
 
     void Shot(Vector3 dir, float normalized)
@@ -72,8 +82,6 @@ public class PlayerController : MonoBehaviour
         isThrown = true;
         // 궤적 없애기
         gameManager.DestroyTrajectory();
-        // 프리팹 생성 및 제거
-        StartCoroutine(CheckCreatePlayerCondition());
     }
     
     private void Update()
@@ -83,7 +91,6 @@ public class PlayerController : MonoBehaviour
         {
             isThrown = false;
             rigid.useGravity = true;
-            // transform.rotation = Quaternion.identity;
             rigid.constraints = RigidbodyConstraints.None;
             
             // 현재 클릭했던 마우스 위치 기억
@@ -148,23 +155,6 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = Camera.main.nearClipPlane; // Adjust z-position for the camera's near clip plane
         return Camera.main.ScreenToWorldPoint(mousePosition);
-    }
-    
-    IEnumerator CheckCreatePlayerCondition()
-    {
-        while (true)
-        {
-            // 2초 지나면 
-            if (elapsedTime > 2.0f)
-            {
-                Debug.Log("PlayerController 2초 지나서 캐릭터 생성할게");
-                // 초기 위치에 새로운 새 생성
-                playerPrefab = gameManager.ReturnNewPlayer();
-                yield break;
-            }
-            
-            yield return null;
-        }
     }
     
     IEnumerator DestroyPlayer()
