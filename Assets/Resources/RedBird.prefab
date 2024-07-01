@@ -746,7 +746,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5112605045709688253}
-  - component: {fileID: 6180742399856197263}
   m_Layer: 0
   m_Name: root
   m_TagString: Untagged
@@ -770,29 +769,6 @@ Transform:
   - {fileID: 7311175092252540272}
   m_Father: {fileID: 9001452590761231913}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6180742399856197263
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4891776208667885881}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.19
-  m_Height: 1.34
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.7}
 --- !u!1 &4983816741910811550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1584,10 +1560,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'lowerarm_l'\n\tTransform 'upperarm_l'\n\tFrom
-    animation clip 'Flying'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

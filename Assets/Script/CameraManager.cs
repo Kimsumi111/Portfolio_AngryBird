@@ -13,6 +13,8 @@ public class CameraManager : MonoBehaviour
     public string targetAnimationState2;
     private CinemachineBrain cinemachineBrain;
     public CinemachineVirtualCamera mainCamera;
+    public CinemachineVirtualCamera landscapeCamera1;
+    public CinemachineVirtualCamera landscapeCamera2;
     public CinemachineVirtualCamera shotCamera;
 
     private void Awake()
@@ -28,8 +30,12 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        mainCamera.Priority = 10;
+        landscapeCamera1.Priority = 10;
+        landscapeCamera2.Priority = 0;
+        mainCamera.Priority = 0;
         shotCamera.Priority = 0;
+
+        StartCoroutine(ShowLandscape());
     }
 
     private void Update()
@@ -56,5 +62,17 @@ public class CameraManager : MonoBehaviour
     {
         playerAnimator = newAnimtor;
         Debug.Log($"New playerAnimator 설정됨 : {playerAnimator}");
+    }
+
+    IEnumerator ShowLandscape()
+    {
+        yield return new WaitForSeconds(2f);
+        landscapeCamera1.enabled = false;
+        landscapeCamera2.enabled = true;
+        
+        yield return new WaitForSeconds(2f);
+        landscapeCamera2.enabled = false;
+        mainCamera.enabled = true;
+        shotCamera.enabled = true;
     }
 }

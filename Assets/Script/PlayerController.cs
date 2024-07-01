@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     public Vector3 initPosition;
     private Quaternion initRotation;
     
-    
     [NonSerialized]
     public GameObject playerPrefab;
     
@@ -83,7 +82,7 @@ public class PlayerController : MonoBehaviour
         // 궤적 없애기
         gameManager.DestroyTrajectory();
     }
-    
+
     private void Update()
     {
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
@@ -147,6 +146,24 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(DestroyPlayer());
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // 미사일 발사
+            }
+        }
+    }
+
+    public float damageMultiplier = 1f;
+    private float impactForce = 0f;
+    private void OnCollisionEnter(Collision other)
+    {
+        impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
+        HpController hp = other.gameObject.GetComponent<HpController>();
+        if (hp != null)
+        {
+            float damage = impactForce * damageMultiplier;
+            hp.TakeDamage(damage);
         }
     }
 
