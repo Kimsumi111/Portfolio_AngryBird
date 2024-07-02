@@ -14,6 +14,7 @@ public class CameraManager : MonoBehaviour
     private CinemachineBrain cinemachineBrain;
     public CinemachineVirtualCamera mainCamera;
     public CinemachineVirtualCamera landscapeCamera1;
+    public CinemachineDollyCart landscape2dollyCart;
     public CinemachineVirtualCamera landscapeCamera2;
     public CinemachineVirtualCamera shotCamera;
 
@@ -66,13 +67,16 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator ShowLandscape()
     {
-        yield return new WaitForSeconds(2f);
-        landscapeCamera1.enabled = false;
-        landscapeCamera2.enabled = true;
+        yield return new WaitForSeconds(4f);
+
+        landscapeCamera1.gameObject.SetActive(false);
+        landscape2dollyCart.gameObject.SetActive(true);
+        landscapeCamera2.gameObject.SetActive(true);
         
-        yield return new WaitForSeconds(2f);
-        landscapeCamera2.enabled = false;
-        mainCamera.enabled = true;
-        shotCamera.enabled = true;
+        yield return new WaitForSeconds(4f);
+    
+        landscapeCamera2.gameObject.SetActive(false);
+        mainCamera.gameObject.SetActive(true);
+        shotCamera.gameObject.SetActive(true);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class HpController : MonoBehaviour
     private float currentHp;
     public GameObject effectPrefab;
     private GameObject effectInstance;
+    public int scoreValue;
+    public GameObject scorePopupPrefab;
     
     void Start()
     {
@@ -45,5 +48,24 @@ public class HpController : MonoBehaviour
         }
         
         Destroy(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (ScoreManager.instance != null)
+        {
+            ScoreManager.instance.AddScore(scoreValue);
+            ShowScorePopup(scoreValue);
+        }
+    }
+
+    void ShowScorePopup(int score)
+    {
+        GameObject scorePopup = Instantiate(scorePopupPrefab, transform.position, Quaternion.identity);
+        ScorePopUp popupScript = scorePopup.GetComponent<ScorePopUp>();
+        if (popupScript != null)
+        {
+            popupScript.Setup(score);
+        }
     }
 }

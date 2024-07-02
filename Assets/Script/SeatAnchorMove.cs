@@ -20,7 +20,7 @@ public class SeatAnchorMove : MonoBehaviour
     private float elapsedTime = 0.0f;
     public bool isThrown = false;
 
-    private GameManager gameManager;
+    private PlayerManager _playerManager;
     
     private void Awake()
     {
@@ -109,7 +109,7 @@ public class SeatAnchorMove : MonoBehaviour
     
     IEnumerator Return()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         transform.DOMove(initPosition, 0.2f);
         yield return new WaitForSeconds(0.2f);
         

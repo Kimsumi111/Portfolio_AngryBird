@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private float elapsedTime = 0.0f;
     public bool isThrown = false;
 
-    private GameManager gameManager;
+    private PlayerManager _playerManager;
     private CameraManager _cameraManager;
     
     private static readonly int IsFlying = Animator.StringToHash("isFlying");
@@ -36,12 +36,12 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         
         playerPrefab = null;
-        gameManager = GameManager.Instance;
+        _playerManager = PlayerManager.Instance;
     }
 
     private void Start()
     {
-        if (gameManager == null)
+        if (_playerManager == null)
         {
             Debug.LogError("GameManager 인스턴스를 찾을 수 없음");
             return;
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         bSnapped = false;
         isThrown = true;
         // 궤적 없애기
-        gameManager.DestroyTrajectory();
+        _playerManager.DestroyTrajectory();
     }
 
     private void Update()
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
             
             
-            gameManager.ShowTrajectory(transform.position, dir * (((currentGap * 30.0f) / MaxGapSize) * MaxPower), playerMass);
+            _playerManager.ShowTrajectory(transform.position, dir * (((currentGap * 30.0f) / MaxGapSize) * MaxPower), playerMass);
             
             // 땡기기 모드였다가 마우스를 땠을때
             if (Input.GetMouseButtonUp(0))
