@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
 
-    public TextMeshProUGUI scoreText;
+    public Text scoreText;
     private int score;
-
+    
     private void Awake()
     {
         if (instance == null)
@@ -34,7 +35,8 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        UpdateScoreText();
+        CustomEvent.Trigger(gameObject, "TriggerScoreSeq", score);
+        // UpdateScoreText();
     }
 
     void UpdateScoreText()

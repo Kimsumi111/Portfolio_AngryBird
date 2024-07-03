@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ScorePopUp : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
+    public Text scoreText;
     public float duration = 1f;
     public float moveSpeed = 2f;
     public Color startColor;

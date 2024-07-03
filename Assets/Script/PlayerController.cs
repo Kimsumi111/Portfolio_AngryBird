@@ -158,12 +158,16 @@ public class PlayerController : MonoBehaviour
     private float impactForce = 0f;
     private void OnCollisionEnter(Collision other)
     {
-        impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
-        HpController hp = other.gameObject.GetComponent<HpController>();
-        if (hp != null)
+        // 충돌 시 이펙트
+        if (!other.gameObject.CompareTag("Terrain"))
         {
-            float damage = impactForce * damageMultiplier;
-            hp.TakeDamage(damage);
+            impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
+            HpController hp = other.gameObject.GetComponent<HpController>();
+            if (hp != null)
+            {
+                float damage = impactForce * damageMultiplier;
+                hp.TakeDamage(damage);
+            }
         }
     }
 

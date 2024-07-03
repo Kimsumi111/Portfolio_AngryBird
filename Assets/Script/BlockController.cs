@@ -9,17 +9,13 @@ public class BlockController : MonoBehaviour
     
     private void Start()
     {
-        if (effectPrefab != null)
-        {
-            effectInstance = Instantiate(effectPrefab);
-            effectInstance.SetActive(false);
-        }
+        StartCoroutine(WaitForEffect());
     }
     
     public float damageMultiplier = 1f;
     private float impactForce = 0f;
     private void OnCollisionEnter(Collision other)
-    { 
+    {
         // 충돌 시 이펙트
         if (!other.gameObject.CompareTag("Terrain"))
         {
@@ -33,16 +29,24 @@ public class BlockController : MonoBehaviour
                     particleSystem.Play();
                 }
             }
+            // hp 깎기
+            impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
+            HpController hp = other.gameObject.GetComponent<HpController>();
+            if (hp != null)
+            {
+                float damage = impactForce * damageMultiplier;
+                hp.TakeDamage(damage);
+            }
         }
-        
-        // hp 깎기
-        impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
-        HpController hp = other.gameObject.GetComponent<HpController>();
-        if (hp != null)
+    }
+
+    IEnumerator WaitForEffect()
+    {
+        yield return new WaitForSeconds(8f);
+        if (effectPrefab != null)
         {
-            float damage = impactForce * damageMultiplier;
-            hp.TakeDamage(damage);
+            effectInstance = Instantiate(effectPrefab);
+            effectInstance.SetActive(false);
         }
-        
     }
 }

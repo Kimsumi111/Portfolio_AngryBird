@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HpController : MonoBehaviour
@@ -27,7 +28,7 @@ public class HpController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-        Debug.Log(currentHp);
+ 
         if (currentHp <= 0)
         {
             Die();
@@ -55,17 +56,6 @@ public class HpController : MonoBehaviour
         if (ScoreManager.instance != null)
         {
             ScoreManager.instance.AddScore(scoreValue);
-            ShowScorePopup(scoreValue);
-        }
-    }
-
-    void ShowScorePopup(int score)
-    {
-        GameObject scorePopup = Instantiate(scorePopupPrefab, transform.position, Quaternion.identity);
-        ScorePopUp popupScript = scorePopup.GetComponent<ScorePopUp>();
-        if (popupScript != null)
-        {
-            popupScript.Setup(score);
         }
     }
 }
