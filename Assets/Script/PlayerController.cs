@@ -24,9 +24,6 @@ public class PlayerController : MonoBehaviour
     public Vector3 initPosition;
     private Quaternion initRotation;
     
-    [NonSerialized]
-    public GameObject playerPrefab;
-    
     private float elapsedTime = 0.0f;
     public bool isThrown = false;
 
@@ -41,7 +38,6 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         
-        playerPrefab = null;
         _playerManager = PlayerManager.Instance;
     }
 
@@ -124,7 +120,7 @@ public class PlayerController : MonoBehaviour
             clickMousePosition = Input.mousePosition;
             // 땡기기 모드 들어감
             bSnapped = true;
-            PlayRubberSound();//감사합니다
+            PlayRubberSound();
         }
         
         // 땡기기 모드일때
@@ -173,16 +169,12 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(DestroyPlayer());
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // 미사일 발사
-            }
         }
     }
 
     public float damageMultiplier = 1f;
     private float impactForce = 0f;
+    
     private void OnCollisionEnter(Collision other)
     {
         // 충돌 시 이펙트
@@ -210,7 +202,19 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
         if (rigid.velocity.magnitude < 0.1f)
-            Destroy(gameObject);
+        {
+            Character characterType = GetCharacterType();
+            _playerManager.ReturnObject(characterType, gameObject);
+        }
+            
         yield return null;
+    }
+
+    private Character GetCharacterType()
+    {
+        if (gameObject.CompareTag("RedPlayer")) return Character.Red;
+        if (gameObject.CompareTag("YellowPlayer")) return Character.Yellow;
+        if (gameObject.CompareTag("BluePlayer")) return Character.Blue;
+        return Character.None;
     }
 }

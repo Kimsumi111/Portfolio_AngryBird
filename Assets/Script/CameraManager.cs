@@ -37,7 +37,7 @@ public class CameraManager : MonoBehaviour
         mainCamera.Priority = 0;
         shotCamera.Priority = 0;
 
-        // StartCoroutine(ShowLandscape());
+        StartCoroutine(ShowLandscape());
     }
 
     private void Update()

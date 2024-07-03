@@ -1523,7 +1523,7 @@ GameObject:
   - component: {fileID: 6665650321797517201}
   m_Layer: 0
   m_Name: RedBird
-  m_TagString: Player
+  m_TagString: RedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1581,6 +1581,7 @@ MonoBehaviour:
   rigid: {fileID: 8202924067263627978}
   stretchRubberSound: {fileID: 8300000, guid: 2d7541d86591ac74290cf1494149f210, type: 3}
   throwSound: {fileID: 8300000, guid: 90a5a37424118a044a4b5d93f238477e, type: 3}
+  audioSource: {fileID: 6665650321797517201}
   MaxPower: 8
   bSnapped: 0
   MaxGapSize: 30

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -16,28 +17,14 @@ public enum Character
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
-    
-    [NonSerialized]
-    public GameObject playerPrefab;
-    private GameObject playerInstance;
 
-    private Rigidbody playerRigid;
+    private Dictionary<Character, Queue<GameObject>> poolDictionary;
     public GameObject redPrefab;
     public GameObject yellowPrefab;
     public GameObject bluePrefab;
-
-    private Vector3 initPosition;
-    private Quaternion initRotation;
-    private Character currentchar;
-    
-    private GameObject selectedPrefab;
-    private PlayerController playerController;
-    public Trajectory trajectory;
-    private CameraManager cameraManager;
     public Canvas WorldUICanvas;
-
-    public Image fadeImage;
-    public float fadeDuration;
+    
+    public Trajectory trajectory;
     
     private void Awake()
     {
@@ -50,113 +37,80 @@ public class PlayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        StartCoroutine(FadeIn()); 
-        SceneManager.LoadScene("SampleScene_Terrian", LoadSceneMode.Additive);
     }
 
     private void Start()
     {
-        initPosition = new Vector3(0.332f, 1.735f, 0f);
-        initRotation = Quaternion.Euler(-50.972f, 90f, 0f);
-        if (playerPrefab == null)
-        {
-            playerPrefab = Resources.Load<GameObject>("BlueBird");
-        }
-        playerRigid = playerPrefab.GetComponent<Rigidbody>();
-        playerController = playerPrefab.GetComponent<PlayerController>();
-        
-        playerRigid.constraints = RigidbodyConstraints.FreezeAll;
-
-        currentchar = Character.Blue;
-        
-        SetCurrentPrefab();
-        CreateNewPlayer();
+        InitializePool();
+        SpawnCharacter(Character.Red);
     }
 
-    void SetCurrentPrefab()
+    void InitializePool()
     {
-        selectedPrefab = null;
-        switch (currentchar)
+        poolDictionary = new Dictionary<Character, Queue<GameObject>>();
+        
+        poolDictionary.Add(Character.Red, new Queue<GameObject>());
+        poolDictionary.Add(Character.Yellow, new Queue<GameObject>());
+        poolDictionary.Add(Character.Blue, new Queue<GameObject>());
+
+        PopulatePool(Character.Red, redPrefab, 2);
+        PopulatePool(Character.Yellow, yellowPrefab, 1);
+        PopulatePool(Character.Blue, bluePrefab, 1);
+    }
+
+    void PopulatePool(Character character, GameObject prefab, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject obj = Instantiate(prefab);
+            obj.SetActive(false);
+            poolDictionary[character].Enqueue(obj);
+        }
+    }
+
+    public GameObject GetObject(Character character)
+    {
+        if (poolDictionary[character].Count > 0)
+        {
+            GameObject obj = poolDictionary[character].Dequeue();
+            obj.SetActive(true);
+            return obj;
+        }
+        else
+        {
+            GameObject newObj = Instantiate(GetPrefab(character));
+            return newObj;
+        }
+    }
+
+    public void ReturnObject(Character character, GameObject obj)
+    {
+        obj.SetActive(false);
+        poolDictionary[character].Enqueue(obj);
+    }
+
+    public void SpawnCharacter(Character characterType)
+    {
+        GameObject character = GetObject(characterType);
+        character.transform.position = new Vector3(0.25f, 2f, 0f);
+        character.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
+    }
+
+    GameObject GetPrefab(Character character)
+    {
+        switch (character)
         {
             case Character.Red:
-                selectedPrefab = redPrefab;
-                break;
+                return redPrefab;
             case Character.Yellow:
-                selectedPrefab = yellowPrefab;
-                break;
+                return yellowPrefab;
             case Character.Blue:
-                selectedPrefab = bluePrefab;
-                break;
+                return bluePrefab;
+            default:
+                return null;
         }
-    }
-
-    void CreateNewPlayer()
-    {
-        if (selectedPrefab == null)
-        {
-            selectedPrefab = bluePrefab;
-        }
-
-        if (playerInstance != null)
-        {
-            Destroy(playerInstance);
-        }
-            
-        Debug.Log("GameManager에서 player 인스턴스 생성함.");
-        playerInstance = Instantiate(selectedPrefab, initPosition, initRotation);
-        Debug.Log(playerInstance);
-        playerInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);// 초기 위치로 돌아감
-        playerInstance.transform.position = initPosition;
     }
     
-    public GameObject ReturnNewPlayer()
-    {
-        if (playerInstance == null)
-        {
-            CreateNewPlayer();
-        }
-        
-        return playerInstance;
-    }
-    
-    private void Update()
-    {
-        if (playerInstance == null)
-        {
-            SetCurrentPrefab();
-            CreateNewPlayer();
-        }
-        if (!playerController.bSnapped && !playerController.isThrown)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (playerController.playerPrefab != null)
-                {
-                    Destroy(playerController.gameObject);
-                }
-                
-                currentchar = Character.Red;
-                SetCurrentPrefab();
-                CreateNewPlayer();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                currentchar = Character.Yellow;
-                SetCurrentPrefab();
-                CreateNewPlayer();
-            }
-        
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                currentchar = Character.Blue;
-                SetCurrentPrefab();
-                CreateNewPlayer();
-            }
-        }
-    }
-
     public void ShowTrajectory(Vector3 startPoint, Vector3 force, float mass)
     {
         trajectory.ShowTrajectory(startPoint, force, mass);
@@ -165,39 +119,5 @@ public class PlayerManager : MonoBehaviour
     public void DestroyTrajectory()
     {
         trajectory.DestroyTrajectory();
-    }
-    
-    public IEnumerator FadeIn()
-    {
-        fadeImage.gameObject.SetActive(true);
-        float elapsedTime = 0f;
-        Color color = fadeImage.color;
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(1.0f - (elapsedTime / fadeDuration));
-            fadeImage.color = color;
-            yield return null;
-        }
-        color.a = 0f;
-        fadeImage.color = color;
-        fadeImage.gameObject.SetActive(false);
-    }
-
-    public IEnumerator FadeOut()
-    {
-        fadeImage.gameObject.SetActive(true);
-        float elapsedTime = 0f;
-        Color color = fadeImage.color;
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
-            fadeImage.color = color;
-            yield return null;
-        }
-        color.a = 1f;
-        fadeImage.color = color;
-        fadeImage.gameObject.SetActive(false);
     }
 }

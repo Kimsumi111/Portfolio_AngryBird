@@ -36,7 +36,6 @@ public class HpController : MonoBehaviour
 
     void Die()
     {
-        //요기?네!
         if (effectInstance != null)
         {
             effectInstance.transform.SetParent(PlayerManager.Instance.WorldUICanvas.transform);
