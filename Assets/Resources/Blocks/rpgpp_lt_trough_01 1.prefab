@@ -12,7 +12,11 @@ GameObject:
   - component: {fileID: 33535767199113812}
   - component: {fileID: 23408824984100580}
   - component: {fileID: 4151416718022961787}
+  - component: {fileID: 4710577679613091865}
   - component: {fileID: 6660215840174019935}
+  - component: {fileID: 5129963190737178291}
+  - component: {fileID: 2699684536348323927}
+  - component: {fileID: 1118768093533172594}
   m_Layer: 0
   m_Name: rpgpp_lt_trough_01 1
   m_TagString: Untagged
@@ -107,6 +111,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 8b3f67c33dd9e9c4ea594b19207b4fbe, type: 3}
+--- !u!114 &4710577679613091865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833936599012662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82150285abdf1354ebbd4039cef0ebbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 0}
+  damageMultiplier: 1
 --- !u!54 &6660215840174019935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -134,3 +152,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5129963190737178291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833936599012662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50ba0c6ffaa4a9549930e0c0ca9d7c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 500
+  effectPrefab: {fileID: 0}
+  scoreValue: 300
+  scorePopupPrefab: {fileID: 0}
+--- !u!114 &2699684536348323927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833936599012662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &1118768093533172594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833936599012662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Big
+      Block Graph","summary":null,"pan":{"x":0.0,"y":0.0},"zoom":1.0,"elements":[{"kind":"Scene","defaultValues":{"name":{"$content":"toAddScore","$type":"System.String"}},"position":{"x":6.0,"y":-95.0},"guid":"7a23507c-4539-440a-a92f-26e436e9f8af","$version":"A","$type":"Unity.VisualScripting.SetVariable","$id":"10"},{"chainable":false,"member":{"name":"scoreValue","parameterTypes":null,"targetType":"HpController","targetTypeName":"HpController","$version":"A"},"defaultValues":{"target":null,"input":{"$content":300,"$type":"System.Int32"}},"position":{"x":-219.0,"y":-88.0},"guid":"c3861333-979b-4f79-a113-6a8dbc40962d","$version":"A","$type":"Unity.VisualScripting.SetMember","$id":"12"},{"sourceUnit":{"$ref":"12"},"sourceKey":"assigned","destinationUnit":{"$ref":"10"},"destinationKey":"assign","guid":"bbc643b6-2a54-4e14-9fc2-7fa36ce21626","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"output","destinationUnit":{"$ref":"10"},"destinationKey":"input","guid":"88c0050f-6a8a-40ee-b2d0-14c6f57e87cd","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
+    _objectReferences: []

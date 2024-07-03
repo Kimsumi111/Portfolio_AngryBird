@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
-
+        
         if (cinemachineBrain == null)
         {
             Debug.LogError("Main Camera에 CinemachineBrain 컴포넌트가 없음.");
@@ -36,7 +37,7 @@ public class CameraManager : MonoBehaviour
         mainCamera.Priority = 0;
         shotCamera.Priority = 0;
 
-        StartCoroutine(ShowLandscape());
+        // StartCoroutine(ShowLandscape());
     }
 
     private void Update()

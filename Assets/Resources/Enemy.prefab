@@ -1674,6 +1674,8 @@ GameObject:
   - component: {fileID: 8912693915797022553}
   - component: {fileID: 4237120703532048421}
   - component: {fileID: 5669766218615154615}
+  - component: {fileID: 4317280778280434952}
+  - component: {fileID: 4068701224991932166}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1733,7 +1735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 10
   effectPrefab: {fileID: 0}
-  scoreValue: 0
+  scoreValue: 5000
   scorePopupPrefab: {fileID: 0}
 --- !u!54 &5669766218615154615
 Rigidbody:
@@ -1762,6 +1764,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4317280778280434952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606755148461151098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &4068701224991932166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606755148461151098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Enemy
+      Graph","summary":null,"pan":{"x":-222.0,"y":-89.0},"zoom":1.0,"elements":[{"kind":"Scene","defaultValues":{"name":{"$content":"toAddScore","$type":"System.String"}},"position":{"x":-69.0,"y":-176.0},"guid":"5fba8352-f4ca-46da-a73c-b33cfecb6e0e","$version":"A","$type":"Unity.VisualScripting.SetVariable","$id":"10"},{"chainable":false,"member":{"name":"scoreValue","parameterTypes":null,"targetType":"HpController","targetTypeName":"HpController","$version":"A"},"defaultValues":{"target":null,"input":{"$content":5000,"$type":"System.Int32"}},"position":{"x":-310.0,"y":-173.0},"guid":"cd259832-5def-480a-9470-a3e33a6e2c27","$version":"A","$type":"Unity.VisualScripting.SetMember","$id":"12"},{"argumentCount":0,"coroutine":false,"defaultValues":{"target":null,"name":{"$content":"SetScoreSeq","$type":"System.String"}},"position":{"x":-529.0,"y":-177.0},"guid":"3184abe1-33a0-41fb-879f-c5a0639beffe","$version":"A","$type":"Unity.VisualScripting.CustomEvent","$id":"15"},{"sourceUnit":{"$ref":"15"},"sourceKey":"trigger","destinationUnit":{"$ref":"12"},"destinationKey":"assign","guid":"70c11408-cf11-4720-a389-677ad58feef7","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"assigned","destinationUnit":{"$ref":"10"},"destinationKey":"assign","guid":"a61f0540-7d32-487e-a43f-dea463b9efbc","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"12"},"sourceKey":"output","destinationUnit":{"$ref":"10"},"destinationKey":"input","guid":"f0720b0e-c948-432b-9bfa-067665a4f2c8","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
+    _objectReferences: []
 --- !u!1 &8683546600774157167
 GameObject:
   m_ObjectHideFlags: 0

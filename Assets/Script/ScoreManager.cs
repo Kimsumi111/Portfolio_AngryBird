@@ -35,7 +35,7 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        CustomEvent.Trigger(gameObject, "TriggerScoreSeq", score);
+        CustomEvent.Trigger(gameObject, "TriggerScoreSeq", points);
         // UpdateScoreText();
     }
 

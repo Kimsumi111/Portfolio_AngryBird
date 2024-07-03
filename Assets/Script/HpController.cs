@@ -11,7 +11,6 @@ public class HpController : MonoBehaviour
     public GameObject effectPrefab;
     private GameObject effectInstance;
     public int scoreValue;
-    public GameObject scorePopupPrefab;
     
     void Start()
     {
@@ -37,20 +36,16 @@ public class HpController : MonoBehaviour
 
     void Die()
     {
+        //요기?네!
         if (effectInstance != null)
         {
+            effectInstance.transform.SetParent(PlayerManager.Instance.WorldUICanvas.transform);
             effectInstance.transform.position = transform.position;
             effectInstance.SetActive(true);
-            ParticleSystem particleSystem = effectInstance.GetComponent<ParticleSystem>();
-            if (particleSystem != null)
-            {
-                particleSystem.Play();
-            }
         }
-        
         Destroy(this.gameObject);
     }
-
+    
     private void OnDestroy()
     {
         if (ScoreManager.instance != null)

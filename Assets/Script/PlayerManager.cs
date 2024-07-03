@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum Character
 {
@@ -32,7 +34,10 @@ public class PlayerManager : MonoBehaviour
     private PlayerController playerController;
     public Trajectory trajectory;
     private CameraManager cameraManager;
+    public Canvas WorldUICanvas;
 
+    public Image fadeImage;
+    public float fadeDuration;
     
     private void Awake()
     {
@@ -46,6 +51,8 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        StartCoroutine(FadeIn()); 
+        SceneManager.LoadScene("SampleScene_Terrian", LoadSceneMode.Additive);
     }
 
     private void Start()
@@ -158,5 +165,39 @@ public class PlayerManager : MonoBehaviour
     public void DestroyTrajectory()
     {
         trajectory.DestroyTrajectory();
+    }
+    
+    public IEnumerator FadeIn()
+    {
+        fadeImage.gameObject.SetActive(true);
+        float elapsedTime = 0f;
+        Color color = fadeImage.color;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(1.0f - (elapsedTime / fadeDuration));
+            fadeImage.color = color;
+            yield return null;
+        }
+        color.a = 0f;
+        fadeImage.color = color;
+        fadeImage.gameObject.SetActive(false);
+    }
+
+    public IEnumerator FadeOut()
+    {
+        fadeImage.gameObject.SetActive(true);
+        float elapsedTime = 0f;
+        Color color = fadeImage.color;
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+            fadeImage.color = color;
+            yield return null;
+        }
+        color.a = 1f;
+        fadeImage.color = color;
+        fadeImage.gameObject.SetActive(false);
     }
 }

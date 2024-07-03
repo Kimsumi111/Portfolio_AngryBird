@@ -12,7 +12,11 @@ GameObject:
   - component: {fileID: 33299995943121162}
   - component: {fileID: 23634921388740476}
   - component: {fileID: 3604648257795249801}
+  - component: {fileID: 3502787745133908204}
   - component: {fileID: 7096508440636652077}
+  - component: {fileID: 3616931027848152772}
+  - component: {fileID: 1189701339914126044}
+  - component: {fileID: 518770717600166268}
   m_Layer: 0
   m_Name: rpgpp_lt_bowl_metal_01
   m_TagString: Untagged
@@ -107,6 +111,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 09cc238bd856b5d468789a6d2d0f48ed, type: 3}
+--- !u!114 &3502787745133908204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075210506956534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82150285abdf1354ebbd4039cef0ebbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrefab: {fileID: 180954, guid: 32ec0161544010e489b0ba741641ac50, type: 3}
+  damageMultiplier: 1
 --- !u!54 &7096508440636652077
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,7 +133,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075210506956534}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 3
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -134,3 +152,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3616931027848152772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075210506956534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50ba0c6ffaa4a9549930e0c0ca9d7c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 350
+  effectPrefab: {fileID: 1952076019714368, guid: 8643f60596ece3b47ab6498e9f096fd8, type: 3}
+  scoreValue: 100
+  scorePopupPrefab: {fileID: 0}
+--- !u!114 &1189701339914126044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075210506956534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!114 &518770717600166268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075210506956534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fe5546f775c47d2820aa5e8a715f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Embed","macro":null,"embed":{"variables":{"Kind":"Flow","collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":"Small
+      Block Graph","summary":null,"pan":{"x":1601.629,"y":44.0},"zoom":1.0,"elements":[{"chainable":false,"member":{"name":"scoreValue","parameterTypes":null,"targetType":"HpController","targetTypeName":"HpController","$version":"A"},"defaultValues":{"target":null,"input":{"$content":100,"$type":"System.Int32"}},"position":{"x":1411.0,"y":-88.0},"guid":"b74d2ab8-1df7-46b8-bb87-ea1e0030e46a","$version":"A","$type":"Unity.VisualScripting.SetMember","$id":"10"},{"kind":"Scene","defaultValues":{"name":{"$content":"toAddScore","$type":"System.String"}},"position":{"x":1641.0,"y":-88.0},"guid":"93aefcab-7cbe-4d23-9439-a76fb3c95136","$version":"A","$type":"Unity.VisualScripting.SetVariable","$id":"13"},{"sourceUnit":{"$ref":"10"},"sourceKey":"assigned","destinationUnit":{"$ref":"13"},"destinationKey":"assign","guid":"78338c58-b114-4e42-a516-a1ddc94488f8","$type":"Unity.VisualScripting.ControlConnection"},{"sourceUnit":{"$ref":"10"},"sourceKey":"output","destinationUnit":{"$ref":"13"},"destinationKey":"input","guid":"363a2d81-a685-4886-b3b0-05c3ab21adbc","$type":"Unity.VisualScripting.ValueConnection"}],"$version":"A"}}}'
+    _objectReferences: []

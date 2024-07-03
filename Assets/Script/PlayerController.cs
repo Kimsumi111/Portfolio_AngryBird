@@ -2,13 +2,18 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 { 
     public Rigidbody rigid;
     private Animator anim;
-
-    // 최대 게이지 파워
+    public AudioClip stretchRubberSound;
+    public AudioClip throwSound;
+    public AudioSource audioSource;
+    
     public float MaxPower = 0f;
     public bool bSnapped = false;
     private float playerMass = 0f;
@@ -29,11 +34,12 @@ public class PlayerController : MonoBehaviour
     private CameraManager _cameraManager;
     
     private static readonly int IsFlying = Animator.StringToHash("isFlying");
-
+    
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         
         playerPrefab = null;
         _playerManager = PlayerManager.Instance;
@@ -47,6 +53,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        audioSource.clip = stretchRubberSound;
+        
         GameObject cameraManagerObject = GameObject.FindWithTag("CameraManager");
         if (cameraManagerObject != null)
         {
@@ -74,17 +82,37 @@ public class PlayerController : MonoBehaviour
 
     void Shot(Vector3 dir, float normalized)
     {
+        PlayThrowSound();
+        
         // 방향 계산해서 그쪽으로 날린다
         rigid.velocity = dir * (normalized * MaxPower);
         // 땡기기 모드 종료
         bSnapped = false;
         isThrown = true;
+        
         // 궤적 없애기
         _playerManager.DestroyTrajectory();
     }
 
+    void PlayRubberSound()
+    {
+        audioSource.clip = stretchRubberSound;
+        audioSource.Play();
+    }
+
+    void PlayThrowSound()
+    {
+        audioSource.clip = throwSound;
+        audioSource.Play();
+    }
+    
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.UnloadSceneAsync("SampleScene_Terrian");
+        }
+        
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
         if (Input.GetMouseButtonDown(0))
         {
@@ -96,6 +124,7 @@ public class PlayerController : MonoBehaviour
             clickMousePosition = Input.mousePosition;
             // 땡기기 모드 들어감
             bSnapped = true;
+            PlayRubberSound();//감사합니다
         }
         
         // 땡기기 모드일때
@@ -124,8 +153,6 @@ public class PlayerController : MonoBehaviour
             Vector3 dir = new Vector3(gap.x, gap.y, 0).normalized;
             if (dir != Vector3.zero)
                 transform.forward = dir;
-
-            
             
             _playerManager.ShowTrajectory(transform.position, dir * (((currentGap * 30.0f) / MaxGapSize) * MaxPower), playerMass);
             
@@ -161,6 +188,7 @@ public class PlayerController : MonoBehaviour
         // 충돌 시 이펙트
         if (!other.gameObject.CompareTag("Terrain"))
         {
+            audioSource.Stop();
             impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
             HpController hp = other.gameObject.GetComponent<HpController>();
             if (hp != null)
