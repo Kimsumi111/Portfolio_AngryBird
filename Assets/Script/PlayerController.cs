@@ -204,13 +204,14 @@ public class PlayerController : MonoBehaviour
         if (rigid.velocity.magnitude < 0.1f)
         {
             Character characterType = GetCharacterType();
-            _playerManager.ReturnObject(characterType, gameObject);
+            Debug.Log("Returning character: " + characterType);
+            _playerManager.DeactivateCurrentCharacter();
         }
             
         yield return null;
     }
 
-    private Character GetCharacterType()
+    public Character GetCharacterType()
     {
         if (gameObject.CompareTag("RedPlayer")) return Character.Red;
         if (gameObject.CompareTag("YellowPlayer")) return Character.Yellow;

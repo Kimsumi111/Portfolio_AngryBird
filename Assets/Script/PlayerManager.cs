@@ -18,14 +18,16 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
 
-    private Dictionary<Character, Queue<GameObject>> poolDictionary;
     public GameObject redPrefab;
     public GameObject yellowPrefab;
     public GameObject bluePrefab;
     public Canvas WorldUICanvas;
-    
+
     public Trajectory trajectory;
-    
+
+    private List<GameObject> players;
+    private int currentPlayerIndex = -1;
+
     private void Awake()
     {
         if (Instance == null)
@@ -41,75 +43,51 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        InitializePool();
-        SpawnCharacter(Character.Red);
+        InitializePlayers();
+        ActivateNextCharacter();
     }
 
-    void InitializePool()
+    void InitializePlayers()
     {
-        poolDictionary = new Dictionary<Character, Queue<GameObject>>();
-        
-        poolDictionary.Add(Character.Red, new Queue<GameObject>());
-        poolDictionary.Add(Character.Yellow, new Queue<GameObject>());
-        poolDictionary.Add(Character.Blue, new Queue<GameObject>());
-
-        PopulatePool(Character.Red, redPrefab, 2);
-        PopulatePool(Character.Yellow, yellowPrefab, 1);
-        PopulatePool(Character.Blue, bluePrefab, 1);
-    }
-
-    void PopulatePool(Character character, GameObject prefab, int count)
-    {
-        for (int i = 0; i < count; i++)
+        players = new List<GameObject>
         {
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(false);
-            poolDictionary[character].Enqueue(obj);
+            Instantiate(redPrefab),
+            Instantiate(yellowPrefab),
+            Instantiate(bluePrefab)
+        };
+
+        foreach (var player in players)
+        {
+            player.SetActive(false);
         }
     }
 
-    public GameObject GetObject(Character character)
+    public void ActivateNextCharacter()
     {
-        if (poolDictionary[character].Count > 0)
+        if (currentPlayerIndex < players.Count - 1)
         {
-            GameObject obj = poolDictionary[character].Dequeue();
-            obj.SetActive(true);
-            return obj;
+            currentPlayerIndex++;
+            GameObject nextPlayer = players[currentPlayerIndex];
+            nextPlayer.SetActive(true);
+            nextPlayer.transform.position = new Vector3(0.25f, 2f, 0f);
+            nextPlayer.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
         }
         else
         {
-            GameObject newObj = Instantiate(GetPrefab(character));
-            return newObj;
+            Debug.Log("더 이상 활성화할 캐릭터가 없습니다");
         }
     }
 
-    public void ReturnObject(Character character, GameObject obj)
+    public void DeactivateCurrentCharacter()
     {
-        obj.SetActive(false);
-        poolDictionary[character].Enqueue(obj);
-    }
-
-    public void SpawnCharacter(Character characterType)
-    {
-        GameObject character = GetObject(characterType);
-        character.transform.position = new Vector3(0.25f, 2f, 0f);
-        character.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
-    }
-
-    GameObject GetPrefab(Character character)
-    {
-        switch (character)
+        if (currentPlayerIndex >= 0 && currentPlayerIndex < players.Count)
         {
-            case Character.Red:
-                return redPrefab;
-            case Character.Yellow:
-                return yellowPrefab;
-            case Character.Blue:
-                return bluePrefab;
-            default:
-                return null;
+            GameObject currentPlayer = players[currentPlayerIndex];
+            currentPlayer.SetActive(false);
+            ActivateNextCharacter();
         }
     }
+
     
     public void ShowTrajectory(Vector3 startPoint, Vector3 force, float mass)
     {
