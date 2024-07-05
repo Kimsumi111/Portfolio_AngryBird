@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
@@ -23,10 +25,24 @@ public class PlayerManager : MonoBehaviour
     public GameObject bluePrefab;
     public Canvas WorldUICanvas;
 
-    public Trajectory trajectory;
+    public TextMeshProUGUI redText;
+    public TextMeshProUGUI yellowText;
+    public TextMeshProUGUI blueText;
 
-    private List<GameObject> players;
-    private int currentPlayerIndex = -1;
+    public Trajectory trajectory;
+    
+    public int redCount = 2;
+    public int yellowCount = 1;
+    public int blueCount = 1;
+    
+    private List<GameObject> redList;
+    private List<GameObject> yellowList;
+    private List<GameObject> blueList;
+
+    private GameObject currentPlayer;
+    private Character currentCharacter;
+
+    private Dictionary<Character, int> characterUses;
 
     private void Awake()
     {
@@ -44,34 +60,94 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         InitializePlayers();
-        ActivateNextCharacter();
+        InitializeCharacterUses();
+        UpdateCharacterUsesText();
     }
 
     void InitializePlayers()
     {
-        players = new List<GameObject>
+        redList = new List<GameObject>();
+        yellowList = new List<GameObject>();
+        blueList = new List<GameObject>();
+        
+        for (int i = 0; i < redCount; i++) // Red
         {
-            Instantiate(redPrefab),
-            Instantiate(yellowPrefab),
-            Instantiate(bluePrefab)
-        };
-
-        foreach (var player in players)
-        {
+            GameObject player = Instantiate(redPrefab);
             player.SetActive(false);
+            redList.Add(player);
+        }
+
+        for (int i = 0; i < yellowCount; i++) // Yellow
+        {
+            GameObject player = Instantiate(yellowPrefab);
+            player.SetActive(false);
+            yellowList.Add(player);
+        }
+
+        for (int i = 0; i < blueCount; i++) // Blue
+        {
+            GameObject player = Instantiate(bluePrefab);
+            player.SetActive(false);
+            blueList.Add(player);
         }
     }
 
-    public void ActivateNextCharacter()
+    void InitializeCharacterUses()
     {
-        if (currentPlayerIndex < players.Count - 1)
+        characterUses = new Dictionary<Character, int>
         {
-            currentPlayerIndex++;
-            GameObject nextPlayer = players[currentPlayerIndex];
-            nextPlayer.SetActive(true);
-            nextPlayer.transform.position = new Vector3(0.25f, 2f, 0f);
-            nextPlayer.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
+            { Character.Red, redList.Count },
+            { Character.Yellow, yellowList.Count },
+            { Character.Blue, blueList.Count }
+        };
+    }
+
+    void UpdateCharacterUsesText()
+    {
+        redText.text = (characterUses[Character.Red]).ToString();
+        yellowText.text = (characterUses[Character.Yellow]).ToString();
+        blueText.text = (characterUses[Character.Blue]).ToString();
+    }
+
+    public void ActivateNextCharacter(Character characterType)
+    {
+        if (currentPlayer != null)
+        {
+            currentPlayer.SetActive(false);
         }
+
+        switch (characterType)
+        {
+            case Character.Red:
+                if (redList.Count > 0)
+                {
+                    currentPlayer = redList[0];
+                    currentCharacter = Character.Red;
+                }
+                break;
+            case Character.Yellow:
+                if (yellowList.Count > 0)
+                {
+                    currentPlayer = yellowList[0];
+                    currentCharacter = Character.Yellow;
+                }
+                break;
+            case Character.Blue:
+                if (blueList.Count > 0)
+                {
+                    currentPlayer = blueList[0];
+                    currentCharacter = Character.Blue;
+                }
+                break;
+        }
+
+        if (currentPlayer != null)
+        {
+            currentPlayer.SetActive(true);
+            currentPlayer.transform.position = new Vector3(0.25f, 2f, 0f);
+            currentPlayer.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
+        }
+
         else
         {
             Debug.Log("더 이상 활성화할 캐릭터가 없습니다");
@@ -80,14 +156,21 @@ public class PlayerManager : MonoBehaviour
 
     public void DeactivateCurrentCharacter()
     {
-        if (currentPlayerIndex >= 0 && currentPlayerIndex < players.Count)
+        if (currentPlayer != null)
         {
-            GameObject currentPlayer = players[currentPlayerIndex];
             currentPlayer.SetActive(false);
-            ActivateNextCharacter();
+            currentPlayer = null;
         }
     }
 
+    public void DownCharacterCount(Character characterType)
+    {
+        if (characterUses.ContainsKey(characterType))
+        {
+            characterUses[characterType]--;
+            UpdateCharacterUsesText();
+        }
+    }
     
     public void ShowTrajectory(Vector3 startPoint, Vector3 force, float mass)
     {

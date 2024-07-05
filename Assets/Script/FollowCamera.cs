@@ -48,7 +48,7 @@ public class FollowCamera : MonoBehaviour
             return player;
         }
 
-        player = GameObject.FindWithTag("RedPlayer");
+        player = GameObject.FindWithTag("BluePlayer");
         if (player != null)
         {
             return player;

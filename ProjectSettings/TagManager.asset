@@ -12,6 +12,7 @@ TagManager:
   - RedPlayer
   - YellowPlayer
   - BluePlayer
+  - DeadZone
   layers:
   - Default
   - TransparentFX

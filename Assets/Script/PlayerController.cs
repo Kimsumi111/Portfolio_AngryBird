@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -86,7 +87,8 @@ public class PlayerController : MonoBehaviour
         bSnapped = false;
         isThrown = true;
         
-        // 궤적 없애기
+        _playerManager.DownCharacterCount(GetCharacterType());
+       
         _playerManager.DestroyTrajectory();
     }
 
@@ -112,6 +114,11 @@ public class PlayerController : MonoBehaviour
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             isThrown = false;
             rigid.useGravity = true;
             rigid.constraints = RigidbodyConstraints.None;
@@ -189,6 +196,11 @@ public class PlayerController : MonoBehaviour
                 hp.TakeDamage(damage);
             }
         }
+
+        if (other.gameObject.CompareTag("DeadZone"))
+        {
+            _playerManager.DeactivateCurrentCharacter();
+        }
     }
 
     private Vector3 GetMouseWorldPosition()
@@ -203,8 +215,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         if (rigid.velocity.magnitude < 0.1f)
         {
-            Character characterType = GetCharacterType();
-            Debug.Log("Returning character: " + characterType);
             _playerManager.DeactivateCurrentCharacter();
         }
             

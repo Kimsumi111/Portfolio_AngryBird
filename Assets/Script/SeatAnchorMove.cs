@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class SeatAnchorMove : MonoBehaviour
 {
@@ -53,6 +54,10 @@ public class SeatAnchorMove : MonoBehaviour
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             isThrown = false;
             rigid.useGravity = true;
             // transform.rotation = Quaternion.identity;

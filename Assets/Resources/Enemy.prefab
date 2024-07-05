@@ -1733,10 +1733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ba0c6ffaa4a9549930e0c0ca9d7c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 10
+  maxHp: 50
   effectPrefab: {fileID: 0}
   scoreValue: 5000
-  scorePopupPrefab: {fileID: 0}
 --- !u!54 &5669766218615154615
 Rigidbody:
   m_ObjectHideFlags: 0
