@@ -7,14 +7,15 @@ using UnityEngine.PlayerLoop;
 public class FollowCamera : MonoBehaviour
 {
     public CinemachineVirtualCamera VirtualCamera;
-    private Transform currentTarget;
+    public Transform currentTarget;
+    private GameObject newPlayer;
+    readonly string[] playerTags = { "RedPlayer", "YellowPlayer", "BluePlayer" };
     
     void Start()
     {
         FindNewTarget();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (currentTarget == null)
@@ -23,9 +24,9 @@ public class FollowCamera : MonoBehaviour
         }
     }
 
-    void FindNewTarget()
+    public void FindNewTarget()
     {
-        GameObject newPlayer = FindNewPlayer();
+        newPlayer = FindNewPlayer();
         if (newPlayer != null)
         {
             currentTarget = newPlayer.transform;
@@ -36,22 +37,13 @@ public class FollowCamera : MonoBehaviour
     
     GameObject FindNewPlayer()
     {
-        GameObject player = GameObject.FindWithTag("RedPlayer");
-        if (player != null)
+        foreach (string tag in playerTags)
         {
-            return player;
-        }
-
-        player = GameObject.FindWithTag("YellowPlayer");
-        if (player != null)
-        {
-            return player;
-        }
-
-        player = GameObject.FindWithTag("BluePlayer");
-        if (player != null)
-        {
-            return player;
+            GameObject player = GameObject.FindWithTag(tag);
+            if (player != null && player.activeInHierarchy)
+            {
+                return player;
+            }
         }
 
         return null;

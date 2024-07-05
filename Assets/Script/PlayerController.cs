@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     
     private float elapsedTime = 0.0f;
     public bool isThrown = false;
-
+    
     private PlayerManager _playerManager;
     private CameraManager _cameraManager;
     
@@ -79,6 +79,8 @@ public class PlayerController : MonoBehaviour
 
     void Shot(Vector3 dir, float normalized)
     {
+        _playerManager.DeactiveButton();
+        
         PlayThrowSound();
         
         // 방향 계산해서 그쪽으로 날린다
@@ -215,7 +217,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         if (rigid.velocity.magnitude < 0.1f)
         {
-            _playerManager.DeactivateCurrentCharacter();
+            PlayerManager.Instance.DeactivateCurrentCharacter();
         }
             
         yield return null;

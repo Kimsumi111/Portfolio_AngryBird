@@ -8,6 +8,7 @@ using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum Character
 {
@@ -25,12 +26,13 @@ public class PlayerManager : MonoBehaviour
     public GameObject bluePrefab;
     public Canvas WorldUICanvas;
 
+    public GameObject Buttons;
     public TextMeshProUGUI redText;
     public TextMeshProUGUI yellowText;
     public TextMeshProUGUI blueText;
 
     public Trajectory trajectory;
-    
+    public FollowCamera followCamera;
     public int redCount = 2;
     public int yellowCount = 1;
     public int blueCount = 1;
@@ -146,6 +148,9 @@ public class PlayerManager : MonoBehaviour
             currentPlayer.SetActive(true);
             currentPlayer.transform.position = new Vector3(0.25f, 2f, 0f);
             currentPlayer.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
+
+            Rigidbody rigid = currentPlayer.GetComponent<Rigidbody>();
+            rigid.constraints = RigidbodyConstraints.FreezeAll;
         }
 
         else
@@ -160,7 +165,10 @@ public class PlayerManager : MonoBehaviour
         {
             currentPlayer.SetActive(false);
             currentPlayer = null;
+            followCamera.currentTarget = null;
         }
+        ActivateRandomCharacter();
+        ActiveButton();
     }
 
     public void DownCharacterCount(Character characterType)
@@ -170,6 +178,55 @@ public class PlayerManager : MonoBehaviour
             characterUses[characterType]--;
             UpdateCharacterUsesText();
         }
+    }
+
+    public void ActivateRandomCharacter()
+    {
+        List<Character> availableCharacters = new List<Character>();
+        
+        if (characterUses[Character.Red] != 0)
+        {
+            availableCharacters.Add(Character.Red);
+        }
+        if (characterUses[Character.Yellow] != 0)
+        {
+            availableCharacters.Add(Character.Yellow);
+        }
+        if (characterUses[Character.Blue] != 0)
+        {
+            availableCharacters.Add(Character.Blue);
+        }
+
+        if (availableCharacters.Count > 0)
+        {
+            int randomIndex = Random.Range(0, availableCharacters.Count);
+            ActivateNextCharacter(availableCharacters[randomIndex]);
+        }
+        else
+        {
+            Debug.Log("더 이상 소환할 캐릭터가 없습니다.");
+        }
+
+        if (currentPlayer != null)
+        {
+            currentPlayer.SetActive(true);
+            currentPlayer.transform.position = new Vector3(0.25f, 2f, 0f);
+            currentPlayer.transform.rotation = Quaternion.Euler(-35f, 90f, 0f);
+            
+            Rigidbody rigid = currentPlayer.GetComponent<Rigidbody>();
+            rigid.constraints = RigidbodyConstraints.FreezeAll;
+        }
+    }
+    
+    public void DeactiveButton()
+    {
+        Buttons.SetActive(false);
+    }
+
+    public void ActiveButton()
+    {
+        
+        Buttons.SetActive(true);
     }
     
     public void ShowTrajectory(Vector3 startPoint, Vector3 force, float mass)
