@@ -13,6 +13,8 @@ namespace EpicToonFX
         [Range(0f, 1f)] // This is an offset that moves the impact effect slightly away from the point of impact to reduce clipping of the impact effect
         public float collideOffset = 0.15f;
 
+        public float speed = 500f;
+
         void Start()
         {
             projectileParticle = Instantiate(projectileParticle, transform.position, transform.rotation) as GameObject;
@@ -22,6 +24,8 @@ namespace EpicToonFX
                 muzzleParticle = Instantiate(muzzleParticle, transform.position, transform.rotation) as GameObject;
                 Destroy(muzzleParticle, 1.5f); // 2nd parameter is lifetime of effect in seconds
             }
+            
+            GetComponent<Rigidbody>().AddForce(transform.up * speed);
         }
 		
         void FixedUpdate()

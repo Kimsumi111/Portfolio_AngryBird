@@ -1736,11 +1736,14 @@ MonoBehaviour:
   throwSound: {fileID: 8300000, guid: 90a5a37424118a044a4b5d93f238477e, type: 3}
   audioSource: {fileID: -6724865863741164947}
   MaxPower: 10
-  bSnapped: 0
   MaxGapSize: 30
   initPosition: {x: 0, y: 0, z: 0}
-  isThrown: 0
+  portalEffect: {fileID: 1034117901172380, guid: 618fb4488b5485649a8438141c614f80, type: 3}
+  missileEffect: {fileID: 128572, guid: c8f9b44ce6a2fee49a78c0d75e8a79d2, type: 3}
   damageMultiplier: 1
+  portal1: {fileID: 0}
+  portal2: {fileID: 0}
+  portal3: {fileID: 0}
 --- !u!54 &4287191810483490263
 Rigidbody:
   m_ObjectHideFlags: 0

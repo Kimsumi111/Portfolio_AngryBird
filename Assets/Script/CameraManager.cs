@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
+    public static CameraManager Instance { get; private set; }
     [SerializeField]
     private Animator playerAnimator;
     public string targetAnimationState1;
@@ -21,12 +22,22 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
         
         if (cinemachineBrain == null)
         {
             Debug.LogError("Main Camera에 CinemachineBrain 컴포넌트가 없음.");
-            return;
         }
     }
 
@@ -37,11 +48,12 @@ public class CameraManager : MonoBehaviour
         mainCamera.Priority = 0;
         shotCamera.Priority = 0;
 
-        //StartCoroutine(ShowLandscape());
+        StartCoroutine(ShowLandscape());
     }
 
     private void Update()
     {
+        // DeadZone 콜라이더에 부딪혀 비활성화 될 경우 카메라 매니저의 애니메이터가 변경되지 않음.
         if (playerAnimator == null)
         {
             return;
@@ -79,5 +91,7 @@ public class CameraManager : MonoBehaviour
         landscapeCamera2.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
         shotCamera.gameObject.SetActive(true);
+        
+        PlayerManager.Instance.ActiveButton();
     }
 }

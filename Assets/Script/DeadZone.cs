@@ -25,6 +25,14 @@ public class DeadZone : MonoBehaviour
         PlayerController playerController = obj.GetComponent<PlayerController>();
         if (playerController != null)
         {
+            if (playerController.portal1 != null && playerController.portal2 != null &&
+                playerController.portal3 != null)
+            {
+                Destroy(playerController.portal1);
+                Destroy(playerController.portal2);
+                Destroy(playerController.portal3);
+            }
+            
             PlayerManager.Instance.DeactivateCurrentCharacter();
         }
         else

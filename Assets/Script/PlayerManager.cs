@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public enum Character
 {
@@ -66,6 +67,14 @@ public class PlayerManager : MonoBehaviour
         UpdateCharacterUsesText();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.UnloadSceneAsync("SampleScene_Terrian");
+        }
+    }
+
     void InitializePlayers()
     {
         redList = new List<GameObject>();
@@ -103,7 +112,8 @@ public class PlayerManager : MonoBehaviour
             { Character.Blue, blueList.Count }
         };
     }
-
+    
+    private Transform newCharacterTransform;
     void UpdateCharacterUsesText()
     {
         redText.text = (characterUses[Character.Red]).ToString();
@@ -111,6 +121,7 @@ public class PlayerManager : MonoBehaviour
         blueText.text = (characterUses[Character.Blue]).ToString();
     }
 
+    public event Action<Transform> OnCharacterChanged; 
     public void ActivateNextCharacter(Character characterType)
     {
         if (currentPlayer != null)
@@ -151,6 +162,9 @@ public class PlayerManager : MonoBehaviour
 
             Rigidbody rigid = currentPlayer.GetComponent<Rigidbody>();
             rigid.constraints = RigidbodyConstraints.FreezeAll;
+            
+            OnCharacterChanged?.Invoke(currentPlayer.transform);
+            CameraManager.Instance.SetNewPlayeranim(currentPlayer.GetComponent<Animator>());
         }
 
         else
@@ -158,7 +172,7 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("더 이상 활성화할 캐릭터가 없습니다");
         }
     }
-
+    
     public void DeactivateCurrentCharacter()
     {
         if (currentPlayer != null)
@@ -168,6 +182,7 @@ public class PlayerManager : MonoBehaviour
             followCamera.currentTarget = null;
         }
         ActivateRandomCharacter();
+        Debug.Log("버튼 활성화 코앞");
         ActiveButton();
     }
 
@@ -215,6 +230,10 @@ public class PlayerManager : MonoBehaviour
             
             Rigidbody rigid = currentPlayer.GetComponent<Rigidbody>();
             rigid.constraints = RigidbodyConstraints.FreezeAll;
+            
+            OnCharacterChanged?.Invoke(currentPlayer.transform);
+            
+            CameraManager.Instance.SetNewPlayeranim(currentPlayer.GetComponent<Animator>());
         }
     }
     
@@ -225,7 +244,7 @@ public class PlayerManager : MonoBehaviour
 
     public void ActiveButton()
     {
-        
+        Debug.Log("버튼 활성화 할거임");
         Buttons.SetActive(true);
     }
     

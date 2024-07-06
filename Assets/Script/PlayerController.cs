@@ -3,7 +3,6 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -16,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource audioSource;
     
     public float MaxPower = 0f;
-    public bool bSnapped = false;
+    private bool bSnapped = false;
     private float playerMass = 0f;
     
     private Vector3 clickMousePosition = Vector3.zero;
@@ -24,9 +23,12 @@ public class PlayerController : MonoBehaviour
     
     public Vector3 initPosition;
     private Quaternion initRotation;
+
+    public GameObject portalEffect;
+    public GameObject missileEffect;
     
     private float elapsedTime = 0.0f;
-    public bool isThrown = false;
+    private bool isThrown = false;
     
     private PlayerManager _playerManager;
     private CameraManager _cameraManager;
@@ -108,11 +110,6 @@ public class PlayerController : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SceneManager.UnloadSceneAsync("SampleScene_Terrian");
-        }
-        
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
         if (Input.GetMouseButtonDown(0))
         {
@@ -178,6 +175,11 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(DestroyPlayer());
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ActivateAbility();
+            }
         }
     }
 
@@ -217,6 +219,13 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         if (rigid.velocity.magnitude < 0.1f)
         {
+            if (portal1 != null && portal2 != null && portal3 != null)
+            {
+                Destroy(portal1);
+                Destroy(portal2);
+                Destroy(portal3);
+            }
+
             PlayerManager.Instance.DeactivateCurrentCharacter();
         }
             
@@ -229,5 +238,26 @@ public class PlayerController : MonoBehaviour
         if (gameObject.CompareTag("YellowPlayer")) return Character.Yellow;
         if (gameObject.CompareTag("BluePlayer")) return Character.Blue;
         return Character.None;
+    }
+
+    private Vector3 _currentPosition;
+    public GameObject portal1 = null;
+    public GameObject portal2 = null;
+    public GameObject portal3 = null;
+    void ActivateAbility()
+    {
+        _currentPosition = transform.position;
+
+        // 위쪽에 생성
+        portal1 = Instantiate(portalEffect, _currentPosition + Vector3.up * 2.0f, Quaternion.Euler(90f, 90f, 0f));
+        Instantiate(missileEffect, _currentPosition + Vector3.up * 2.0f, Quaternion.Euler(90f, 90f, 0f));
+
+        // 오른쪽에 생성
+        portal2 = Instantiate(portalEffect, _currentPosition + Vector3.forward * 2.0f, Quaternion.Euler(90f, 90f, 0f));
+        Instantiate(missileEffect, _currentPosition + Vector3.forward * 2.0f, Quaternion.Euler(90f, 90f, 0f));
+
+        // 왼쪽에 생성
+        portal3 = Instantiate(portalEffect, _currentPosition + Vector3.back * 2.0f, Quaternion.Euler(90f, 90f, 0f));
+        Instantiate(missileEffect, _currentPosition + Vector3.back * 2.0f, Quaternion.Euler(90f, 90f, 0f));
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine.PlayerLoop;
 
 public class FollowCamera : MonoBehaviour
@@ -13,6 +14,10 @@ public class FollowCamera : MonoBehaviour
     
     void Start()
     {
+        if (PlayerManager.Instance != null)
+        {
+            PlayerManager.Instance.OnCharacterChanged += UpdateCameraTarget;
+        }
         FindNewTarget();
     }
     
@@ -48,5 +53,14 @@ public class FollowCamera : MonoBehaviour
 
         return null;
     }
-    
+
+    void UpdateCameraTarget(Transform newTarget)
+    {
+        if (newTarget != null)
+        {
+            currentTarget = newTarget;
+            VirtualCamera.Follow = currentTarget;
+            VirtualCamera.LookAt = currentTarget;
+        }
+    }
 }
