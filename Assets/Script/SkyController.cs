@@ -6,13 +6,6 @@ using UnityEngine;
 
 public class SkyController : MonoBehaviour
 {
-    public Material dayMat;
-    public Material nightMat;
-    public GameObject dayLight;
-    public GameObject nightLight;
-
-    public Color dayFog;
-    public Color nightFog;
     
     private void Update()
     {

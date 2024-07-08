@@ -2,20 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PBRMaskTint
   m_Shader: {fileID: 4800000, guid: 7b29e16cd6fe21340b7ca52e26be82ef, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -47,6 +51,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Color01Power: 3.1
     - _Color02Power: 3.4
@@ -59,7 +64,7 @@ Material:
     - _Color09Power: 2
     - __dirty: 1
     m_Colors:
-    - _Color01: {r: 0.06278926, g: 0.16952698, b: 0.7830189, a: 0}
+    - _Color01: {r: 1, g: 0, b: 0.88149357, a: 0}
     - _Color02: {r: 0.10457456, g: 0.20204146, b: 0.8867924, a: 0}
     - _Color03: {r: 0.16967781, g: 0.32275674, b: 0.8773585, a: 0}
     - _Color04: {r: 0.509434, g: 0, b: 0.11614302, a: 0}
@@ -67,6 +72,6 @@ Material:
     - _Color06: {r: 0.6226415, g: 0.36146772, b: 0.038180865, a: 0}
     - _Color07: {r: 0, g: 0.31724882, b: 1, a: 0}
     - _Color08: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
-    - _Color09_SKIN: {r: 0.20870416, g: 0.26778442, b: 0.6603774, a: 0}
+    - _Color09_SKIN: {r: 0.9528302, g: 0.8220323, b: 0.46293166, a: 0}
     - _EmissionPower: {r: 1.3568628, g: 1.3568628, b: 1.3568628, a: 0}
   m_BuildTextureStacks: []
