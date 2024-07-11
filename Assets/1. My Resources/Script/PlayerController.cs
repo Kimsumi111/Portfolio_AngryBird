@@ -26,7 +26,8 @@ public class PlayerController : MonoBehaviour
     [NonSerialized]
     public Vector3 initPosition;
     private Quaternion initRotation;
-    
+
+    public Button skillButton;
     private float elapsedTime = 0.0f;
     private bool isThrown = false;
     
@@ -105,6 +106,16 @@ public class PlayerController : MonoBehaviour
         Debug.Log("스킬버튼 활성화");
     }
 
+    private void OnEnable()
+    {
+        SkillEvent.OnSkillButtonClicked += SkillActive;
+    }
+
+    private void OnDisable()
+    {
+        SkillEvent.OnSkillButtonClicked -= SkillActive;
+    }
+    
     void PlayRubberSound()
     {
         audioSource.clip = stretchRubberSound;
@@ -116,7 +127,7 @@ public class PlayerController : MonoBehaviour
         audioSource.clip = throwSound;
         audioSource.Play();
     }
-    
+
     private void Update()
     {
         // 왼쪽 마우스 클릭 되면 (1은 오른쪽)
@@ -184,11 +195,11 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(DestroyPlayer());
             }
-
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 PlayerManager.Instance.SkillBtnClicked();
-                skills.Activate();
+                SkillActive();
             }
 
             if (Input.GetKeyUp(KeyCode.Space))
@@ -254,7 +265,10 @@ public class PlayerController : MonoBehaviour
         return Character.None;
     }
 
-    
+    public void SkillActive()
+    {
+        skills?.Activate();
+    }
     
     
 

@@ -1155,11 +1155,11 @@ MonoBehaviour:
   cameraMoveSound: {fileID: 8300000, guid: e8d6f50dc7648f348815f8e6a55e2898, type: 3}
   seaSound: {fileID: 8300000, guid: 054205af35efcb942be9610445479a7c, type: 3}
   forestSound: {fileID: 8300000, guid: bec1cfb465efc7a41bd5ccbac5b6f2a2, type: 3}
-  backgroundSound: {fileID: 8300000, guid: 7429eae842c932a488357c467a858972, type: 3}
+  backgroundSound: {fileID: 8300000, guid: c2cedde7e3129914d8f94084e73e96a5, type: 3}
   fallStar: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
   missionClear: {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
-  missionFail: {fileID: 8300000, guid: 5fdb13d3756c84fecac96f5a2d124370, type: 3}
-  bossSound: {fileID: 0}
+  missionFail: {fileID: 8300000, guid: bddaa9d4a3e41334483299cadaab2f43, type: 3}
+  bossSound: {fileID: 8300000, guid: 7429eae842c932a488357c467a858972, type: 3}
 --- !u!1 &795190274
 GameObject:
   m_ObjectHideFlags: 0

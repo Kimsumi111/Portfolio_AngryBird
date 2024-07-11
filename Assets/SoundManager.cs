@@ -49,15 +49,15 @@ public class SoundManager : MonoBehaviour
             _audioSources[2].Stop();
             PlayStartSound();
         }
-        if (scene.name == "SampleScene")
-        {
-            _audioSources[0].Stop();
-            StartCoroutine(WaitForSound(backgroundSound));
-        }
         if (scene.name == "SampleScene_Terrian")
         {
             _audioSources[0].Stop();
             StartCoroutine(WaitForSound(backgroundSound));
+        }
+        if (scene.name == "SampleScene")
+        {
+            _audioSources[0].Stop();
+            StartCoroutine(WaitForSound(bossSound));
         }
     }
     public void PlayStartSound()

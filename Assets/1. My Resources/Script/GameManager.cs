@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Image fadeImage;
     public float fadeDuration;
     public ScaleStars scaleStars;
+    public GameObject skillBtn;
     private List<HpController> enemies = new List<HpController>();
     
     protected virtual void Awake()
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     protected void ActivateCanvas()
     {
+        skillBtn.SetActive(false);
         stageEndCanvas.SetActive(true);
         scaleStars.UpdateStarImages();
     }

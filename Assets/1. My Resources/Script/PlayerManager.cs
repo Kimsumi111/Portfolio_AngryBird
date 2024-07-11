@@ -94,6 +94,8 @@ public class PlayerManager : MonoBehaviour
         InitializePlayers();
         InitializeCharacterUses();
         UpdateCharacterUsesText();
+        
+        skillButton.onClick.AddListener(SkillEvent.SkillButtonClicked);
     }
 
     protected void InitializePlayers()
@@ -217,6 +219,7 @@ public class PlayerManager : MonoBehaviour
 
     void ActivateFailCanvas()
     {
+        skillBtn.SetActive(false);
         stageEndCanvas.SetActive(true);
         scaleStars.SetFailStarImage();
     }
