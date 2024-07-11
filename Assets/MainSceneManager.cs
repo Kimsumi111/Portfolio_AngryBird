@@ -21,8 +21,6 @@ public class MainSceneManager : MonoBehaviour
     public Button stageStartBtn;
     public bool[] stageLocked;
     public GameObject LockerImage;
-
-    public MainSoundManager _mainSoundManager;
     
     private int currentStage = 0;
 
@@ -35,12 +33,14 @@ public class MainSceneManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            DontDestroyOnLoad(Instance.gameObject);
+            Instance = this;
         }
     }
 
     void Start()
     {
+        SoundManager.Instance.PlayStartSound();
         mainCamera.Priority = 10;
         foreach (var camera in stageCameras)
         {
@@ -50,8 +50,8 @@ public class MainSceneManager : MonoBehaviour
         stageCanvas.SetActive(false);
 
         stageLocked = new bool[stageCameras.Length];
-        stageLocked[0] = false;
-        for (int i = 1; i < stageLocked.Length; i++)
+        stageLocked[6] = false;
+        for (int i = 0; i < stageLocked.Length - 1; i++)
         {
             stageLocked[i] = true;
         }
@@ -64,6 +64,7 @@ public class MainSceneManager : MonoBehaviour
         startCanvas.SetActive(false);
         stageCanvas.SetActive(true);
 
+        StartCoroutine(WaitCameraMove());
         currentStage = 0;
         SetStage(currentStage);
     }
@@ -88,7 +89,13 @@ public class MainSceneManager : MonoBehaviour
 
     public void StartStage()
     {
-        SceneManager.LoadScene("SampleScene");
+        SoundManager.Instance.StopStartSound();
+        StartCoroutine(LoadSceneCoroutine());
+    }
+    
+    IEnumerator LoadSceneCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync("SampleScene_Terrian");
     }
     
     void SetStage(int stageIndex)
@@ -106,7 +113,7 @@ public class MainSceneManager : MonoBehaviour
         
         UpdateStageButton();
         
-        _mainSoundManager.PlayCameraMoveSound();
+        SoundManager.Instance.PlayCameraMoveSound();
     }
 
     void UpdateStageButton()
@@ -123,7 +130,9 @@ public class MainSceneManager : MonoBehaviour
     IEnumerator WaitCameraMove()
     {
         stageCanvas.SetActive(false);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         stageCanvas.SetActive(true);
     }
+
+    
 }

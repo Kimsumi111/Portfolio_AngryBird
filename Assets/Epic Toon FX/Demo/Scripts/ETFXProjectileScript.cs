@@ -74,5 +74,21 @@ namespace EpicToonFX
                 Destroy(gameObject); // Removes the projectile
             }
         }
+
+        private float impactForce;
+        private void OnCollisionEnter(Collision other)
+        {
+            // 충돌 시 이펙트
+            if (!other.gameObject.CompareTag("Terrain"))
+            {
+                impactForce = other.relativeVelocity.magnitude * other.rigidbody.mass;
+                HpController hp = other.gameObject.GetComponent<HpController>();
+                if (hp != null)
+                {
+                    float damage = impactForce;
+                    hp.TakeDamage(damage);
+                }
+            }
+        }
     }
 }
