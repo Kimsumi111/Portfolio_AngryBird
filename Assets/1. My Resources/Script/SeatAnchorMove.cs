@@ -41,9 +41,8 @@ public class SeatAnchorMove : MonoBehaviour
 
     void Shot(Vector3 dir, float normalized)
     {
-        // 방향 계산해서 그쪽으로 날린다
         rigid.velocity = dir * (normalized * MaxPower);
-        // 땡기기 모드 종료
+    
         bSnapped = false;
         isThrown = true;
         StartCoroutine(Return());
@@ -69,20 +68,17 @@ public class SeatAnchorMove : MonoBehaviour
             bSnapped = true;
         }
         
-        // 땡기기 모드일때
         if (bSnapped)
         {
-            // 현재 마우스 좌표를 월드 좌표로 변환
             Vector3 currentMousePosition = GetMouseWorldPosition();
             
             // 처음 마우스 찍었던 좌표에서 현재 마우스 좌표를 빼면 앵그리버드가 날아가야 할 방향이 뜬다.
             Vector3 gap = clickMousePosition - Input.mousePosition;
+            // 마우스를 당길 때 캐릭터가 적당히 당겨지기 위해 값 나눔.
             float currentGap = gap.magnitude / 50.0f;
             
-            // 그 길이가 마우스 최대 허용범위를 넘어서면
             if (currentGap >= MaxGapSize)
             {
-                // 마우스 최대 허용 범위로 바뀐다.
                 currentGap = MaxGapSize;
             }
             
@@ -96,10 +92,8 @@ public class SeatAnchorMove : MonoBehaviour
             if (dir != Vector3.zero)
                 transform.forward = dir;
             
-            // 땡기기 모드였다가 마우스를 땠을때
             if (Input.GetMouseButtonUp(0))
             {
-                // 앵그리 버드를 날린다.
                 Shot(dir, (currentGap * 30.0f) / MaxGapSize);
             }
         }

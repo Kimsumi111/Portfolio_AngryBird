@@ -15,14 +15,17 @@ public class MainSceneManager : MonoBehaviour
 
     public CinemachineVirtualCamera mainCamera;
     public CinemachineVirtualCamera[] stageCameras;
+    public CinemachineVirtualCamera highCamera;
     public GameObject startCanvas;
+    public GameObject stageHighCanvas;
     public GameObject stageCanvas;
     public TextMeshProUGUI stageText;
     public Button stageStartBtn;
     public bool[] stageLocked;
     public GameObject LockerImage;
+    public Button[] stageButtons;
     
-    private int currentStage = 0;
+    private int currentStageIndex = 0;
 
     private void Awake()
     {
@@ -42,12 +45,14 @@ public class MainSceneManager : MonoBehaviour
     {
         SoundManager.Instance.PlayStartSound();
         mainCamera.Priority = 10;
+        highCamera.Priority = 0;
         foreach (var camera in stageCameras)
         {
             camera.Priority = 0;
         }
         startCanvas.SetActive(true);
         stageCanvas.SetActive(false);
+        stageHighCanvas.SetActive(false);
 
         stageLocked = new bool[stageCameras.Length];
         stageLocked[6] = false;
@@ -55,35 +60,70 @@ public class MainSceneManager : MonoBehaviour
         {
             stageLocked[i] = true;
         }
-        
-        UpdateStageButton();
+
+        for (int i = 0; i < stageButtons.Length; i++)
+        {
+            int stageNum = i + 1;
+            stageButtons[i].onClick.AddListener(() => CloseToStage(stageNum));
+        }
     }
 
+    public void BackToMain()
+    {
+        SoundManager.Instance.PlayCameraMoveSound();
+        mainCamera.Priority = 10;
+        highCamera.Priority = 0;
+        
+        stageHighCanvas.SetActive(false);
+        StartCoroutine(WaitCameraBackMain());
+    }
+    
+    public void BackToHighCam()
+    {
+        SoundManager.Instance.PlayCameraMoveSound();
+        highCamera.Priority = 10;
+        foreach (var camera in stageCameras)
+        {
+            camera.Priority = 0;
+        }
+        
+        stageCanvas.SetActive(false);
+        StartCoroutine(WaitCameraHigh());
+        currentStageIndex = 0;
+    }
+    
     public void StartGame()
     {
+        mainCamera.Priority = 0;
+        highCamera.Priority = 10;
         startCanvas.SetActive(false);
-        stageCanvas.SetActive(true);
-
-        StartCoroutine(WaitCameraMove());
-        currentStage = 0;
-        SetStage(currentStage);
+        SoundManager.Instance.PlayCameraMoveSound();
+        StartCoroutine(WaitCameraHigh());
+    }
+    
+    public void CloseToStage(int stageIndex)
+    {
+        stageHighCanvas.SetActive(false);
+        highCamera.Priority = 0;
+        StartCoroutine(WaitCameraZoom());
+        SetStage(stageIndex);
     }
     
     public void NextStage()
     {
-        if (currentStage < stageCameras.Length - 1)
+        if (currentStageIndex < stageCameras.Length - 1)
         {
-            currentStage++;
-            SetStage(currentStage);
+            currentStageIndex++;
+            SetStage(currentStageIndex + 1);
         }
     }
 
     public void PreviousStage()
     {
-        if (currentStage > 0)
+        if (currentStageIndex > 0)
         {
-            currentStage--;
-            SetStage(currentStage);
+            currentStageIndex--;
+            SetStage(currentStageIndex + 1);
         }
     }
 
@@ -98,27 +138,28 @@ public class MainSceneManager : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("SampleScene_Terrian");
     }
     
-    void SetStage(int stageIndex)
+    void SetStage(int stageNum)
     {
-        mainCamera.Priority = 0;
         for (int i = 0; i < stageCameras.Length; i++)
         {
-            stageCameras[i].Priority = (i == stageIndex) ? 10 : 0;
+            stageCameras[i].Priority = (i == stageNum - 1) ? 10 : 0;
         }
 
         if (stageText != null)
         {
-            stageText.text = "스테이지 " + (stageIndex + 1);
+            stageText.text = "스테이지 " + (stageNum);
         }
+
+        currentStageIndex = stageNum - 1;
         
-        UpdateStageButton();
+        UpdateStageButton(stageNum);
         
         SoundManager.Instance.PlayCameraMoveSound();
     }
 
-    void UpdateStageButton()
+    void UpdateStageButton(int stageNum)
     {
-        bool isLocked = stageLocked[currentStage];
+        bool isLocked = stageLocked[stageNum - 1];
         stageStartBtn.interactable = !isLocked;
         LockerImage.SetActive(isLocked);
         
@@ -127,12 +168,24 @@ public class MainSceneManager : MonoBehaviour
         stageStartBtn.colors = colors;
     }
 
-    IEnumerator WaitCameraMove()
+    IEnumerator WaitCameraHigh()
     {
-        stageCanvas.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
-        stageCanvas.SetActive(true);
+        stageHighCanvas.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        stageHighCanvas.SetActive(true);
     }
 
+    IEnumerator WaitCameraZoom()
+    {
+        stageCanvas.SetActive(false);
+        yield return new WaitForSeconds(1f);
+        stageCanvas.SetActive(true);
+    }
     
+    IEnumerator WaitCameraBackMain()
+    {
+        startCanvas.SetActive(false);
+        yield return new WaitForSeconds(2f);
+        startCanvas.SetActive(true);
+    }
 }
